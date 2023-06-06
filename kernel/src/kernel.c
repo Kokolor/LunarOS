@@ -22,6 +22,5 @@ void _start(void)
     shell_prompt();
     put_char('_', term.cursor_x, term.cursor_y, &term);
 
-    while (1)
-        ;
+    while (1);
 }

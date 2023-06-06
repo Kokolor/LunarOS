@@ -15,16 +15,28 @@ static idt_pointer idtr;
 
 void panic(char *message, struct interrupt_frame *frame)
 {
-    clear_screen(0x0000ff);
-    put_string("A problem has been detected and LunarOS has been shut down to prevent damage to your computer.\n\n");
-    put_string("If this is the first time you've seen this error screen, restart your computer. If this screen appears again, follow\n");
-    put_string("these steps:\n\n");
-    put_string("Check to make sure any new hardware or software is properly installed. If this is a new installation, ask your hardware or software manufacturer for any\nLunarOS updates you might need.\n\n");
-    put_string("If problems continue, disable or remove any newly installed hardware or software. Disable BIOS memory options such as caching or shadowing.\n\n");
-    put_string("Technical Information:\n\n");
+    clear_screen(0x550000);
+
+    term.color = 0xFFFFFF;
+    put_string("*** SYSTEM FAILURE ***\n\n");
+
+    term.color = 0xFFFF00;
+    put_string("LunarOS has encountered a serious issue and needs to shut down.\n\n");
+
+    term.color = 0xFFFFFF;
+    put_string("If this is the first time you've encountered this problem, try rebooting your system. If you see this system lament again, consider the following:\n\n");
+
+    term.color = 0x00FF00;
+    put_string("1. Verify any new hardware or software is installed correctly.\n");
+    put_string("2. Request any necessary LunarOS updates from your hardware or software provider.\n");
+    put_string("3. If issues persist, disable or remove any newly installed hardware or software.\n");
+    put_string("4. Consider disabling BIOS memory options.\n\n");
+
+    term.color = 0xFFFFFF;
+    put_string("Technical Information\n\n");
 
     char buffer[64];
-    put_string("*** STOP: 0x");
+    put_string("*** PANIC: 0x");
     itoa64(frame->error_code, buffer, 16);
     put_string(buffer);
 
@@ -34,6 +46,9 @@ void panic(char *message, struct interrupt_frame *frame)
     itoa64(frame->rip, buffer, 16);
     put_string(buffer);
     put_string("\n\n");
+
+    term.color = 0xFF0000;
+    put_string("System halted.\n");
 
     while (1)
     {

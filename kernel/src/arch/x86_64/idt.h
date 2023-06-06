@@ -22,5 +22,4 @@ typedef struct
     uint64_t base;
 } __attribute__((packed)) idt_pointer;
 
-void init_timer(uint32_t frequency);
 void init_idt();
