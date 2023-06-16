@@ -73,6 +73,34 @@ int strcmp(const char *str1, const char *str2)
     return *(unsigned char *)str1 - *(unsigned char *)str2;
 }
 
+char *strchr(const char *str, int character)
+{
+    while (*str != '\0')
+    {
+        if (*str == character)
+            return (char *)str;
+        str++;
+    }
+    return NULL;
+}
+
+size_t strlen(const char *str)
+{
+    const char *s = str;
+    while (*s)
+        s++;
+    return s - str;
+}
+
+char *strdup(const char *s)
+{
+    size_t len = strlen(s) + 1;
+    char *dup = malloc(len);
+    if (dup != NULL)
+        memcpy(dup, s, len);
+    return dup;
+}
+
 void strncpy(char *dest, const char *src, size_t n)
 {
     size_t i;
@@ -165,6 +193,120 @@ char *strtok(char *str, const char *delimiters)
     next_token = end;
 
     return start;
+}
+
+char *strrchr(const char *str, int character)
+{
+    const char *last_occurrence = NULL;
+
+    while (*str != '\0')
+    {
+        if (*str == character)
+        {
+            last_occurrence = str;
+        }
+        str++;
+    }
+
+    if (*str == character)
+    {
+        last_occurrence = str;
+    }
+
+    return (char *)last_occurrence;
+}
+
+long int strtol(const char *str, char **endptr, int base)
+{
+    int sign = 1;
+    long int result = 0;
+
+    while (*str == ' ')
+    {
+        str++;
+    }
+
+    if (*str == '-')
+    {
+        sign = -1;
+        str++;
+    }
+    else if (*str == '+')
+    {
+        str++;
+    }
+
+    if (base == 0)
+    {
+        if (*str == '0')
+        {
+            if (str[1] == 'x' || str[1] == 'X')
+            {
+                base = 16;
+                str += 2;
+            }
+            else
+            {
+                base = 8;
+                str++;
+            }
+        }
+        else
+        {
+            base = 10;
+        }
+    }
+
+    while (*str != '\0')
+    {
+        int digit;
+        if (*str >= '0' && *str <= '9')
+        {
+            digit = *str - '0';
+        }
+        else if (*str >= 'a' && *str <= 'z')
+        {
+            digit = *str - 'a' + 10;
+        }
+        else if (*str >= 'A' && *str <= 'Z')
+        {
+            digit = *str - 'A' + 10;
+        }
+        else
+        {
+            break;
+        }
+
+        if (digit >= base)
+        {
+            break;
+        }
+
+        if (result > (LONG_MAX - digit) / base)
+        {
+            result = sign == -1 ? LONG_MIN : LONG_MAX;
+            if (endptr != NULL)
+            {
+                *endptr = (char *)str;
+            }
+            return result;
+        }
+
+        result = result * base + digit;
+        str++;
+    }
+
+    if (endptr != NULL)
+    {
+        *endptr = (char *)str;
+    }
+
+    return result * sign;
+}
+
+int atoi(const char *str)
+{
+    return (int)strtol(str, (char **)NULL, 10);
 }
 
 void itoa(char *buf, unsigned long int n, int base)

@@ -10,6 +10,7 @@
         "pmm.h": "c",
         "limine.h": "c",
         "boot.h": "c",
-        "ramdisk.h": "c"
+        "ramdisk.h": "c",
+        "limits.h": "c"
     }
 }

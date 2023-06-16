@@ -50,7 +50,6 @@ void boot()
     if (test_block != NULL)
     {
         printk("Successfully allocated block at %p\n", test_block);
-
     }
     else
     {
@@ -87,6 +86,7 @@ void boot()
     {
         printk_error("Failed to create boot.txt\n");
     }
+    create_lunar_script("script1.luscr", "print[Hello world from Lunar Script!]\nlist_files[]");
 
     printk_success("Boot complete. Welcome to LunarOS!\n");
 

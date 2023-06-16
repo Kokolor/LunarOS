@@ -98,6 +98,13 @@ void shell_execute_command()
             put_string("\n");
         }
     }
+    else if (strncmp(command_buffer, "./", 2) == 0)
+    {
+        char *filename = command_buffer + 2;
+        size_t size = 0;
+
+        void *file_start = execute_lunar_script(filename);
+    }
     else
     {
         put_string("Command not found: ");
