@@ -47,8 +47,26 @@ void shell_execute_command()
     }
     else if (strcmp(command_buffer, "help") == 0)
     {
-        put_string("div0 - Create a division per zero\n");
+        put_string("div0 - Create a division per zero\nclear - Clear the screen\nhelp - Show the comamnd list\nshutdown - Shutdown the os\nfetch - Fetch Lunar information\n");
     }
+    else if (strcmp(command_buffer, "") == 0)
+    {
+    }
+    else if (strcmp(command_buffer, "fetch") == 0)
+    {
+        put_string("OS: LunarOS\nKernel: Lunaris\nVersion: 0.1Dev\nDeveloppers: Kokolor, LeGamer\n");
+    }
+    else if (strcmp(command_buffer, "clear") == 0)
+    {
+        clear_screen(0x000000);
+    }
+
+    else if (strcmp(command_buffer, "shutdown") == 0)
+    {
+        printk_info("Now, you can safety shutdown your computer.");
+        asm("hlt");
+    }
+
     else
     {
         put_string("Command not found: ");
