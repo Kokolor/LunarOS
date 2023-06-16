@@ -59,4 +59,4 @@ clean:
 
 run:
 	make iso
-	qemu-system-x86_64.exe -m 128M -L "C:/Program Files/qemu" -debugcon stdio -cdrom ./lunar.iso
+	qemu-system-x86_64 -m 128M -enable-kvm -debugcon stdio -cdrom ./lunar.iso

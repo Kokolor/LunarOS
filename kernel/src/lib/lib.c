@@ -62,7 +62,7 @@ void *memset(void *ptr, int value, size_t count)
 
 int strcmp(const char *str1, const char *str2)
 {
-    while(*str1 && (*str1 == *str2))
+    while (*str1 && (*str1 == *str2))
     {
         str1++;
         str2++;
@@ -94,25 +94,33 @@ void itoa(char *buf, unsigned long int n, int base)
     }
 }
 
-void itoa64(uint64_t value, char* str, int base)
+void itoa64(uint64_t value, char *str, int base)
 {
-    char* ptr = str, *ptr1 = str, tmp_char;
+    char *ptr = str, *ptr1 = str, tmp_char;
     uint64_t tmp_value;
 
-    do {
+    do
+    {
         tmp_value = value;
         value /= base;
         *ptr++ = "fedcba9876543210123456789abcdef"[15 + (tmp_value - value * base)];
-    } while ( value );
+    } while (value);
 
     // Apply negative sign
     if (tmp_value < 0)
         *ptr++ = '-';
     *ptr-- = '\0';
 
-    while(ptr1 < ptr) {
+    while (ptr1 < ptr)
+    {
         tmp_char = *ptr;
-        *ptr--= *ptr1;
+        *ptr-- = *ptr1;
         *ptr1++ = tmp_char;
     }
+}
+
+void delay(uint16_t ms)
+{
+    for (long long int i = 0; i < 5000 * (uint16_t)ms / 2; i++)
+        io_wait();
 }

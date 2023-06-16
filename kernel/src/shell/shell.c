@@ -33,7 +33,7 @@ void shell_input_backspace()
     if (command_length > 0)
     {
         command_length--;
-        put_rectangle(term.cursor_x - 8, term.cursor_y, 8, 16, 0x0000ff);
+        put_rectangle(term.cursor_x - 8, term.cursor_y, 8, 16, 0x000000);
     }
 }
 
@@ -61,5 +61,7 @@ void shell_execute_command()
 
 void shell_prompt()
 {
+    term.color = 0xf00fff;
     put_string("admin@shell-# ");
+    term.color = 0xffffff;
 }

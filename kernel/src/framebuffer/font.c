@@ -1004,6 +1004,14 @@ void printk(const char *format, ...)
                 put_string(str);
                 break;
             }
+            case 'p':
+            {
+                void *ptr = va_arg(args, void *);
+                char str[19];
+                itoa64((uint64_t)ptr, str, 16);
+                put_string(str);
+                break;
+            }
             }
         }
         else
@@ -1014,4 +1022,28 @@ void printk(const char *format, ...)
         format++;
     }
     va_end(args);
+}
+
+void printk_info(const char *message)
+{
+    term.color = 0x0000ff;
+    printk("[INFO] ");
+    printk(message);
+    term.color = 0xffffff;
+}
+
+void printk_success(const char *message)
+{
+    term.color = 0x00ff00;
+    printk("[SUCCESS] ");
+    printk(message);
+    term.color = 0xffffff;
+}
+
+void printk_error(const char *message)
+{
+    term.color = 0xff0000;
+    printk("[ERROR] ");
+    printk(message);
+    term.color = 0xffffff;
 }

@@ -10,3 +10,4 @@ void *memcpy(void *dest, const void *src, size_t count);
 void *memset(void *ptr, int value, size_t count);
 void itoa(char *buf, unsigned long int n, int base);
 void itoa64(uint64_t value, char* str, int base);
+void delay(uint16_t ms);

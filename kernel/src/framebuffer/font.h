@@ -13,3 +13,7 @@ typedef struct
 void init_terminal(terminal *term, int cursor_x, int cursor_y, unsigned int color);
 void put_char(char c, int x, int y, terminal *term);
 void put_string(char *string);
+void printk(const char *format, ...);
+void printk_info(const char *message);
+void printk_success(const char *message);
+void printk_error(const char *message);

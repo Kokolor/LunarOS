@@ -161,7 +161,7 @@ __attribute__((interrupt)) void kb_handler(struct interrupt_frame *frame)
         return;
     }
 
-    put_rectangle(term.cursor_x, term.cursor_y, 8, 16, 0x0000ff);
+    put_rectangle(term.cursor_x, term.cursor_y, 8, 16, 0x000000);
 
     if (scancode == 0x0E)
     {
