@@ -1,3 +1,4 @@
+#include <framebuffer/font.h>
 #include "idt.h"
 
 struct interrupt_frame

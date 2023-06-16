@@ -1,5 +1,7 @@
 #include "lib.h"
 
+// Thanks chatgpt for this file
+
 void outb(unsigned short port, unsigned char value)
 {
     asm volatile("outb %0, %1"
@@ -69,6 +71,100 @@ int strcmp(const char *str1, const char *str2)
     }
 
     return *(unsigned char *)str1 - *(unsigned char *)str2;
+}
+
+void strncpy(char *dest, const char *src, size_t n)
+{
+    size_t i;
+    for (i = 0; i < n && src[i] != '\0'; i++)
+        dest[i] = src[i];
+    for (; i < n; i++)
+        dest[i] = '\0';
+}
+
+int strncmp(const char *str1, const char *str2, size_t n)
+{
+    while (n && *str1 && (*str1 == *str2))
+    {
+        ++str1;
+        ++str2;
+        --n;
+    }
+    if (n == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        return (*(unsigned char *)str1 - *(unsigned char *)str2);
+    }
+}
+
+char *strtok(char *str, const char *delimiters)
+{
+    static char *next_token = NULL;
+    bool found_delim = false;
+
+    if (str != NULL)
+    {
+        next_token = str;
+    }
+
+    char *start = next_token;
+    while (*start != '\0')
+    {
+        found_delim = false;
+
+        for (size_t i = 0; delimiters[i] != '\0'; i++)
+        {
+            if (*start == delimiters[i])
+            {
+                found_delim = true;
+                break;
+            }
+        }
+
+        if (found_delim)
+        {
+            *start = '\0';
+            start++;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    if (*start == '\0')
+    {
+        return NULL;
+    }
+
+    char *end = start;
+    while (*end != '\0')
+    {
+        bool found_next_delim = false;
+
+        for (size_t i = 0; delimiters[i] != '\0'; i++)
+        {
+            if (*end == delimiters[i])
+            {
+                found_next_delim = true;
+                break;
+            }
+        }
+
+        if (found_next_delim)
+        {
+            break;
+        }
+
+        end++;
+    }
+
+    next_token = end;
+
+    return start;
 }
 
 void itoa(char *buf, unsigned long int n, int base)

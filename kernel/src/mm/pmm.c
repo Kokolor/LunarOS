@@ -4,6 +4,11 @@ unsigned char bitmap[BITMAP_SIZE];
 struct limine_memmap_entry *memmap_entry;
 void *memory_start;
 
+struct block_header
+{
+    size_t size;
+};
+
 void init_pmm(struct limine_memmap_entry *memmap, uint64_t entry_count)
 {
     memmap_entry = memmap;
@@ -52,3 +57,29 @@ void pmm_free_block(void *p)
     }
 }
 
+void *malloc(size_t size)
+{
+    void *block = pmm_alloc_block();
+    if (block == NULL)
+    {
+        return NULL;
+    }
+
+    struct block_header *header = (struct block_header *)block;
+    header->size = size;
+    void *data = (void *)((uintptr_t)block + sizeof(struct block_header));
+
+    return data;
+}
+
+void free(void *ptr)
+{
+    if (ptr == NULL)
+    {
+        return;
+    }
+
+    struct block_header *header = (struct block_header *)((uintptr_t)ptr - sizeof(struct block_header));
+
+    pmm_free_block(header);
+}

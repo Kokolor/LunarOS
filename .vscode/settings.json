@@ -8,6 +8,8 @@
         "debug.h": "c",
         "gdt.h": "c",
         "pmm.h": "c",
-        "limine.h": "c"
+        "limine.h": "c",
+        "boot.h": "c",
+        "ramdisk.h": "c"
     }
 }

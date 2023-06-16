@@ -13,6 +13,7 @@ CFLAGS := \
 	-fno-stack-check \
 	-fno-lto \
 	-fno-PIE \
+	-w \
 	-fno-PIC \
 	-m64 \
 	-march=x86-64 \

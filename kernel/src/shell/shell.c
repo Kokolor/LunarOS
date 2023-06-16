@@ -1,3 +1,4 @@
+#include <framebuffer/font.h>
 #include "shell.h"
 
 #define MAX_CMD_LENGTH 256
@@ -47,7 +48,7 @@ void shell_execute_command()
     }
     else if (strcmp(command_buffer, "help") == 0)
     {
-        put_string("div0 - Create a division per zero\nclear - Clear the screen\nhelp - Show the comamnd list\nshutdown - Shutdown the os\nfetch - Fetch Lunar information\n");
+        put_string("div0 - Create a division per zero\nclear - Clear the screen\nhelp - Show the comamnd list\nshutdown - Shutdown the os\nfetch - Fetch Lunar information\nls - List ramdisk files\n");
     }
     else if (strcmp(command_buffer, "") == 0)
     {
@@ -60,13 +61,43 @@ void shell_execute_command()
     {
         clear_screen(0x000000);
     }
-
     else if (strcmp(command_buffer, "shutdown") == 0)
     {
         printk_info("Now, you can safety shutdown your computer.");
         asm("hlt");
     }
+    else if (strcmp(command_buffer, "ls") == 0)
+    {
+        list_files();
+    }
+    else if (strncmp(command_buffer, "cat ", 4) == 0)
+    {
+        char *filename = command_buffer + 4;
+        char buffer[1024];
 
+        void *file_start = read_file(filename, buffer, sizeof(buffer) - 1);
+
+        if (file_start != NULL)
+        {
+            buffer[sizeof(buffer) - 1] = '\0';
+            put_string(buffer);
+        }
+        printk("\n");
+    }
+    else if (strncmp(command_buffer, "touch ", 6) == 0)
+    {
+        char *filename = command_buffer + 6;
+        size_t size = 0;
+
+        void *file_start = create_file(filename, size);
+
+        if (file_start != NULL)
+        {
+            put_string("Created file: ");
+            put_string(filename);
+            put_string("\n");
+        }
+    }
     else
     {
         put_string("Command not found: ");
