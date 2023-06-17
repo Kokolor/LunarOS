@@ -13,6 +13,7 @@ unsigned short inw(unsigned short port);
 void io_wait();
 void *memcpy(void *dest, const void *src, size_t count);
 void *memset(void *ptr, int value, size_t count);
+void *memmove(void *dest, const void *src, size_t n);
 void strncpy(char *dest, const char *src, size_t n);
 int strncmp(const char *str1, const char *str2, size_t n);
 char *strchr(const char *str, int character);

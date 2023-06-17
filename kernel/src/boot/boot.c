@@ -20,7 +20,7 @@ void put_progress_bar(int progress, int max_progress)
 
 void boot()
 {
-    struct limine_memmap_entry *memmap_entry = memmap_request.response->entries;
+        struct limine_memmap_entry *memmap_entry = memmap_request.response->entries;
     put_progress_bar(0, 6);
     delay(20);
     printk_success("Framebuffer initialized\n");
@@ -44,12 +44,15 @@ void boot()
     printk_success("PMM initialized\n");
     put_progress_bar(6, 6);
     delay(20);
+    printk_success("Ramdisk initialized\n\n");
+    delay(20);
 
     term.color = 0xffffff;
     void *test_block = pmm_alloc_block();
     if (test_block != NULL)
     {
         printk("Successfully allocated block at %p\n", test_block);
+
     }
     else
     {
@@ -75,20 +78,12 @@ void boot()
         printk("Allocation failed.\n");
     }
 
-    char Boot_txt[] = "Hello, world!";
-    create_file("boot.txt", sizeof(Boot_txt));
-    write_file("boot.txt", Boot_txt, sizeof(Boot_txt));
-    if (Boot_txt != NULL)
-    {
-        printk("Successfully created boot.txt\n\n");
-    }
-    else
-    {
-        printk_error("Failed to create boot.txt\n");
-    }
-    create_lunar_script("script1.luscr", "print[Hello world from Lunar Script!]\nlist_files[]");
+    char update_lst[] = "Friday June 16:\nLunarOS ramdisk and write/read system is now up";
+    create_file("updates.lst", sizeof(update_lst));
+    write_file("updates.lst", update_lst, sizeof(update_lst));
+    create_lunar_script("test.luscr", "print[Test LunarScript v1.0]\n");
 
-    printk_success("Boot complete. Welcome to LunarOS!\n");
+    printk("Welcome to LunarOS! -- Type 'help' for the full command list\n");
 
     delay(20);
     put_rectangle(PROGRESS_BAR_X, PROGRESS_BAR_Y, PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT, 0x000000);

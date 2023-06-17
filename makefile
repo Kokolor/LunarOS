@@ -57,6 +57,7 @@ clean:
 	rm -f $(OBJS)
 	rm -f kernel.elf
 	rm -f lunar.iso
+	rm *.o
 
 run:
 	make iso

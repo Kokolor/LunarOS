@@ -62,6 +62,27 @@ void *memset(void *ptr, int value, size_t count)
     return ptr;
 }
 
+void *memmove(void *dest, const void *src, size_t n)
+{
+    uint8_t *d = (uint8_t *)dest;
+    const uint8_t *s = (const uint8_t *)src;
+
+    if (s < d && (s + n) > d)
+    {
+        s += n;
+        d += n;
+        while (n-- > 0)
+            *--d = *--s;
+    }
+    else
+    {
+        while (n-- > 0)
+            *d++ = *s++;
+    }
+
+    return dest;
+}
+
 int strcmp(const char *str1, const char *str2)
 {
     while (*str1 && (*str1 == *str2))

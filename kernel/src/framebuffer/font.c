@@ -906,20 +906,17 @@ void init_terminal(terminal *term, int cursor_x, int cursor_y, unsigned int colo
     term->color = color;
 }
 
-void scroll(terminal *term)
+void scroll()
 {
-    uint32_t *framebuffer_pointer = (uint32_t *)buffer->address;
-
-    for (uint64_t y = 0; y < buffer->height - 16; y++)
+    for (int y = 0; y < buffer->height - 16; y++)
     {
-        memcpy((void *)(framebuffer_pointer + y * buffer->pitch / sizeof(uint32_t)),
-               (void *)(framebuffer_pointer + (y + 16) * buffer->pitch / sizeof(uint32_t)),
-               buffer->pitch);
+        memcpy(buffer->address + y * buffer->pitch + 8, buffer->address + (y + 16) * buffer->pitch + 8, buffer->pitch - 8);
     }
-    memset((void *)(framebuffer_pointer + (buffer->height - 16) * buffer->pitch / sizeof(uint32_t)),
-           0,
-           buffer->pitch);
+
+    // Réinitialiser les lignes supérieures du tampon
+    memset(buffer->address + (buffer->height - 16) * buffer->pitch + 8, 0, buffer->pitch * 16 - 8);
 }
+
 
 void put_char(char c, int x, int y, terminal *term)
 {
@@ -946,11 +943,6 @@ void put_string(char *string)
         {
             term.cursor_x = 0;
             term.cursor_y += 16;
-            if (term.cursor_y >= buffer->height)
-            {
-                scroll(&term);
-                term.cursor_y -= 16;
-            }
         }
         else
         {
@@ -960,11 +952,12 @@ void put_string(char *string)
             {
                 term.cursor_x = 0;
                 term.cursor_y += 16;
-                if (term.cursor_y >= buffer->height)
-                {
-                    scroll(&term);
-                    term.cursor_y -= 16;
-                }
+            }
+
+            if (term.cursor_y >= buffer->height)
+            {
+                scroll();
+                term.cursor_y -= 16;
             }
         }
     }

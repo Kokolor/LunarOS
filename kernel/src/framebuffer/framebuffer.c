@@ -13,6 +13,12 @@ void put_pixel(int x, int y, uint32_t color)
     framebuffer_pointer[y * buffer->width + x] = color;
 }
 
+uint32_t get_pixel(int x, int y)
+{
+    uint32_t *framebuffer_pointer = buffer->address;
+    return framebuffer_pointer[y * buffer->width + x];
+}
+
 void put_rectangle(int x, int y, int width, int height, uint32_t color)
 {
     for (int i = y; i < y + height; i++)
