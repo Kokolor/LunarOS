@@ -9,3 +9,4 @@ void *create_file(const char *name, size_t size);
 void *read_file(const char *name, void *buffer, size_t size);
 void write_file(const char *name, const void *data, size_t size);
 void list_files();
+void print_ramdisk_info();

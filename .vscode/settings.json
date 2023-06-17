@@ -11,6 +11,10 @@
         "limine.h": "c",
         "boot.h": "c",
         "ramdisk.h": "c",
-        "limits.h": "c"
+        "limits.h": "c",
+        "font.h": "c",
+        "shell.h": "c",
+        "editor.h": "c",
+        "wallpaper.h": "c"
     }
 }

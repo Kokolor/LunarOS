@@ -162,8 +162,6 @@ __attribute__((interrupt)) void kb_handler(struct interrupt_frame *frame)
         return;
     }
 
-    put_rectangle(term.cursor_x, term.cursor_y, 8, 16, 0x000000);
-
     if (scancode == 0x0E)
     {
         if (term.cursor_x > 112)
@@ -189,8 +187,6 @@ __attribute__((interrupt)) void kb_handler(struct interrupt_frame *frame)
             term.cursor_x += 8;
         }
     }
-
-    put_char('_', term.cursor_x, term.cursor_y, &term);
 
     pic_end_master();
 }

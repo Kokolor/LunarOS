@@ -45,6 +45,7 @@ iso:
 	mkdir -p iso_root
 	cp kernel.elf \
 		limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
+	cp background.bmp iso_root/
 	xorriso -as mkisofs -b limine-cd.bin \
 		-no-emul-boot -boot-load-size 4 -boot-info-table \
 		--efi-boot limine-cd-efi.bin \
@@ -57,8 +58,13 @@ clean:
 	rm -f $(OBJS)
 	rm -f kernel.elf
 	rm -f lunar.iso
+	rm fat32.img
 	rm *.o
 
-run:
+fat32_image:
+	dd if=/dev/zero of=fat32.img bs=1M count=64
+	mkfs.fat -F32 fat32.img
+
+run: fat32_image
 	make iso
-	qemu-system-x86_64 -m 128M -enable-kvm -debugcon stdio -cdrom ./lunar.iso
+	qemu-system-x86_64 -m 128M -enable-kvm -debugcon stdio -hda fat32.img -cdrom lunar.iso -boot d

@@ -8,6 +8,7 @@
 
 void outb(unsigned short port, unsigned char value);
 unsigned char inb(unsigned short port);
+void insl(uint16_t port, void *addr, int cnt);
 void outw(unsigned short port, unsigned short value);
 unsigned short inw(unsigned short port);
 void io_wait();

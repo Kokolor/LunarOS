@@ -18,6 +18,14 @@ unsigned char inb(unsigned short port)
     return result;
 }
 
+void insl(uint16_t port, void *addr, int cnt)
+{
+    asm volatile("cld; rep insl"
+                 : "=D"(addr), "=c"(cnt)
+                 : "d"(port), "0"(addr), "1"(cnt)
+                 : "memory", "cc");
+}
+
 void outw(unsigned short port, unsigned short value)
 {
     asm volatile("outw %0, %1"

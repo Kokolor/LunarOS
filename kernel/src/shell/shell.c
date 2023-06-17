@@ -5,6 +5,7 @@
 
 char command_buffer[MAX_CMD_LENGTH];
 int command_length = 0;
+int prompt_position = 0;
 
 char scancode_to_ascii(uint8_t scancode)
 {
@@ -34,9 +35,10 @@ void shell_input_backspace()
     if (command_length > 0)
     {
         command_length--;
-        put_rectangle(term.cursor_x - 8, term.cursor_y, 8, 16, 0x000000);
+        redraw_background(term.cursor_x - 8, term.cursor_y, 8, 16); // Dessine la portion de l'image de fond correspondante
     }
 }
+
 
 void shell_execute_command()
 {
@@ -44,7 +46,7 @@ void shell_execute_command()
 
     if (strcmp(command_buffer, "div0") == 0)
     {
-        int panic = 0 / 0;
+        int panic = 15 / 0;
     }
     else if (strcmp(command_buffer, "help") == 0)
     {
@@ -120,4 +122,5 @@ void shell_prompt()
     term.color = 0xf00fff;
     put_string("admin@shell-# ");
     term.color = 0xffffff;
+    prompt_position = term.cursor_x;
 }
