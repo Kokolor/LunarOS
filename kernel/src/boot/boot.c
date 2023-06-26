@@ -100,45 +100,8 @@ void boot()
     init_idt();
     printk_success("IDT initialized\n");
     init_pmm(memmap_entry, memmap_request.response->entry_count);
-    printk_success("PMM initialized\n");
-    printk_success("Ramdisk initialized\n\n");
-
-    term.color = 0xffffff;
-    void *test_block = pmm_alloc_block();
-    if (test_block != NULL)
-    {
-        printk("Successfully allocated block at %p\n", test_block);
-    }
-    else
-    {
-        printk("Failed to allocate block\n");
-    }
-
-    pmm_free_block(test_block);
-    printk("Freed block at %p\n", test_block);
-
-    void *ptr1 = malloc(10);
-    void *ptr2 = malloc(20);
-
-    if (ptr1 && ptr2)
-    {
-        printk("Allocation successful.\n");
-
-        free(ptr1);
-        free(ptr2);
-        printk("Deallocation successful.\n");
-    }
-    else
-    {
-        printk("Allocation failed.\n");
-    }
+    printk_success("PMM initialized\n\n");
+    printk("Memory start : %p\n", memory_start);
 
     printk("\n");
-
-    char data1[] = "This is a ramdisk file!";
-
-    create_file("file1.txt", sizeof(data1));
-    write_file("file1.txt", data1, sizeof(data1));
-
-    list_files();
 }

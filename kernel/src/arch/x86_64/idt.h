@@ -2,6 +2,10 @@
 #include <stdbool.h>
 #include "pic.h"
 
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#define panic(message, frame) _panic(__FILE__ ":" TOSTRING(__LINE__) ": " message, frame)
+
 extern struct interrupt_frame;
 
 typedef struct

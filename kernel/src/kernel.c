@@ -3,9 +3,7 @@
 #include <limine/limine.h>
 #include <debug/debug.h>
 #include <arch/x86_64/gdt.h>
-#include <arch/x86_64/idt.h>
 #include <framebuffer/font.h>
-#include <mm/pmm.h>
 #include <boot/boot.h>
 
 static volatile struct limine_framebuffer_request framebuffer_request = {

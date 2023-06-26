@@ -1,10 +1,6 @@
 #include <framebuffer/font.h>
 #include "idt.h"
 
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-#define panic(message, frame) _panic(__FILE__ ":" TOSTRING(__LINE__) ": " message, frame)
-
 struct interrupt_frame
 {
     uint64_t rip;

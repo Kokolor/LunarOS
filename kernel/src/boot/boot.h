@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <limine/limine.h>
+#include <mm/pmm.h>
 
 #define PROGRESS_BAR_WIDTH 600
 #define PROGRESS_BAR_HEIGHT 20

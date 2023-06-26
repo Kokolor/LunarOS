@@ -1,9 +1,9 @@
 #include "gdt.h"
 
-gdt_entry_t gdt[5];
-gdt_descriptor_t gdtr;
+gdt_entry gdt[5];
+gdt_pointer gdtr;
 
-extern void load_gdt(gdt_descriptor_t*);
+extern void load_gdt(gdt_pointer*);
 
 void set_gdt_entry(int i, uint16_t limit, uint16_t base, uint8_t access, uint8_t flags) {
     gdt[i].base0 = base & 0xFFFF;
