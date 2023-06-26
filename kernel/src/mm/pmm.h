@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <limine/limine.h>
-// #include <framebuffer/font.h>
 
 #define MEMORY_SIZE 1024 * 1024
 #define BLOCK_SIZE 4096

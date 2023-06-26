@@ -67,4 +67,4 @@ fat32_image:
 
 run: fat32_image
 	make iso
-	qemu-system-x86_64 -m 128M -enable-kvm -debugcon stdio -hda fat32.img -cdrom lunar.iso -boot d
+	qemu-system-x86_64.exe -L "C:/Program Files/qemu" -m 4096M -debugcon stdio -hda fat32.img -cdrom lunar.iso -boot d

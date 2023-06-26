@@ -19,11 +19,7 @@ void _start(void)
     init_framebuffer(framebuffer);
     init_terminal(&term, 0, 0, 0xffffff);
 
-    put_rectangle(PROGRESS_BAR_X, PROGRESS_BAR_Y, PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT, 0xffffff);
-
     boot();
-
-    // printk("%s", module_request.response->modules);
 
     while (1)
         ;

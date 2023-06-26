@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include <stdbool.h>
-#include <shell/shell.h>
 #include "pic.h"
 
 extern struct interrupt_frame;

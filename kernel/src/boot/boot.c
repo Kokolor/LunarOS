@@ -24,19 +24,6 @@ struct limine_module_request module_request = {
 
 uint32_t background_image[1280 * 720];
 
-void put_progress_bar(int progress, int max_progress)
-{
-    int fillWidth = (progress * PROGRESS_BAR_WIDTH) / max_progress;
-    uint32_t color = interpolate_color(COLOR_START, COLOR_END, progress, max_progress);
-
-    for (int i = 0; i < fillWidth; i++)
-    {
-        put_rectangle(PROGRESS_BAR_X + i, PROGRESS_BAR_Y, 1, PROGRESS_BAR_HEIGHT, color);
-    }
-
-    put_rectangle(PROGRESS_BAR_X + fillWidth, PROGRESS_BAR_Y, PROGRESS_BAR_WIDTH - fillWidth, PROGRESS_BAR_HEIGHT, 0xffffff);
-}
-
 void load_background_image(struct limine_file *file)
 {
     struct limine_memmap_entry *memmap_entry = memmap_request.response->entries;
@@ -107,32 +94,14 @@ void boot()
     file = response->modules[0];
 
     load_background_image(file);
-
-    put_progress_bar(0, 6);
-    delay(20);
     printk_success("Framebuffer initialized\n");
-    put_progress_bar(1, 6);
-    delay(20);
     init_gdt();
-    put_progress_bar(2, 6);
-    delay(20);
     printk_success("GDT initialized\n");
-    put_progress_bar(3, 6);
-    delay(20);
     init_idt();
-    put_progress_bar(4, 6);
-    delay(20);
     printk_success("IDT initialized\n");
-    put_progress_bar(5, 6);
-    delay(20);
     init_pmm(memmap_entry, memmap_request.response->entry_count);
-    put_progress_bar(6, 6);
-    delay(20);
     printk_success("PMM initialized\n");
-    put_progress_bar(6, 6);
-    delay(20);
     printk_success("Ramdisk initialized\n\n");
-    delay(20);
 
     term.color = 0xffffff;
     void *test_block = pmm_alloc_block();
@@ -164,19 +133,12 @@ void boot()
         printk("Allocation failed.\n");
     }
 
-    char update_lst[] = "Friday June 16:\nLunarOS ramdisk and write/read system is now up";
-    create_file("updates.lst", sizeof(update_lst));
-    write_file("updates.lst", update_lst, sizeof(update_lst));
-    create_lunar_script("test.luscr", "print[Test LunarScript v1.0]\nlist_files[]");
     printk("\n");
 
-    print_ramdisk_info();
+    char data1[] = "This is a ramdisk file!";
 
-    printk("\n");
-    printk("Welcome to LunarOS! -- Type 'help' for the full command list\n");
+    create_file("file1.txt", sizeof(data1));
+    write_file("file1.txt", data1, sizeof(data1));
 
-    delay(20);
-    redraw_background(PROGRESS_BAR_X, PROGRESS_BAR_Y, PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT);
-
-    shell_prompt();
+    list_files();
 }

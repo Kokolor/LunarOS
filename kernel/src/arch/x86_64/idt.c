@@ -1,6 +1,10 @@
 #include <framebuffer/font.h>
 #include "idt.h"
 
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#define panic(message, frame) _panic(__FILE__ ":" TOSTRING(__LINE__) ": " message, frame)
+
 struct interrupt_frame
 {
     uint64_t rip;
@@ -14,39 +18,29 @@ struct interrupt_frame
 __attribute__((aligned(0x10))) static idt_entry idt[256];
 static idt_pointer idtr;
 
-void panic(char *message, struct interrupt_frame *frame)
+void _panic(char *message, struct interrupt_frame *frame)
 {
     clear_screen(0x550000);
 
-    term.color = 0xFFFFFF;
-    put_string("*** SYSTEM FAILURE ***\n\n");
-
-    term.color = 0xFFFF00;
-    put_string("LunarOS has encountered a serious issue and needs to shut down.\n\n");
-
-    term.color = 0xFFFFFF;
-    put_string("If this is the first time you've encountered this problem, try rebooting your system. If you see this system lament again, consider the following:\n\n");
-
-    term.color = 0x00FF00;
-    put_string("1. Verify any new hardware or software is installed correctly.\n");
-    put_string("2. Request any necessary LunarOS updates from your hardware or software provider.\n");
-    put_string("3. If issues persist, disable or remove any newly installed hardware or software.\n");
-    put_string("4. Consider disabling BIOS memory options.\n\n");
-
-    term.color = 0xFFFFFF;
-    put_string("Technical Information\n\n");
+    put_string("####### ######  ######  ####### ######  \n");
+    put_string("#       #     # #     # #     # #     # \n");
+    put_string("#       #     # #     # #     # #     # \n");
+    put_string("#####   ######  ######  #     # ######  \n");
+    put_string("#       #   #   #   #   #     # #   #   \n");
+    put_string("#       #    #  #    #  #     # #    #  \n");
+    put_string("####### #     # #     # ####### #     # \n");
+    put_string("\n");
+    put_string("LunarOS has been stopped due to a system error.\n");
+    put_string("\n");
 
     char buffer[64];
-    put_string("*** PANIC: 0x");
-    itoa64(frame->error_code, buffer, 16);
-    put_string(buffer);
-
-    put_string("\n*** ");
+    term.color = 0x00FF00;
+    put_string("Panic: ");
     put_string(message);
     put_string(" - Address 0x");
     itoa64(frame->rip, buffer, 16);
     put_string(buffer);
-    put_string("\n\n");
+    put_string("\n");
 
     term.color = 0xFF0000;
     put_string("System halted.\n");
@@ -155,38 +149,6 @@ __attribute__((interrupt)) void virtualization_exception_handler(struct interrup
 __attribute__((interrupt)) void kb_handler(struct interrupt_frame *frame)
 {
     uint8_t scancode = inb(0x60);
-
-    if (scancode & 0x80)
-    {
-        pic_end_master();
-        return;
-    }
-
-    if (scancode == 0x0E)
-    {
-        if (term.cursor_x > 112)
-        {
-            shell_input_backspace();
-            term.cursor_x -= 8;
-        }
-    }
-    else if (scancode == 0x1C)
-    {
-        put_string("\n");
-        shell_execute_command();
-        shell_prompt();
-        term.cursor_x = 112;
-    }
-    else
-    {
-        char ascii = scancode_to_ascii(scancode);
-        if (ascii)
-        {
-            put_char(ascii, term.cursor_x, term.cursor_y, &term);
-            shell_input_char(ascii);
-            term.cursor_x += 8;
-        }
-    }
 
     pic_end_master();
 }
