@@ -7,7 +7,7 @@
         "idt.h": "c",
         "debug.h": "c",
         "gdt.h": "c",
-        "pmm.h": "c",
+        "pfa.h": "c",
         "limine.h": "c",
         "boot.h": "c",
         "ramdisk.h": "c",

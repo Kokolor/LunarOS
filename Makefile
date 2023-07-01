@@ -45,6 +45,7 @@ iso:
 	mkdir -p iso_root
 	cp kernel.elf \
 		limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
+	cp font.psf iso_root/
 	cp background.bmp iso_root/
 	xorriso -as mkisofs -b limine-cd.bin \
 		-no-emul-boot -boot-load-size 4 -boot-info-table \
@@ -57,13 +58,14 @@ iso:
 clean:
 	rm -f $(OBJS)
 	rm -f kernel.elf
-	rm -f lunar.iso
 	rm fat32.img
+	rm -f lunar.iso
 	rm *.o
 
 fat32_image:
 	dd if=/dev/zero of=fat32.img bs=1M count=64
 	mkfs.fat -F32 fat32.img
+	mcopy -i fat32.img ./hello.txt ::/
 
 run: fat32_image
 	make iso

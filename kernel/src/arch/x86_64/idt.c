@@ -1,4 +1,4 @@
-#include <framebuffer/font.h>
+// #include <framebuffer/font.h>
 #include "idt.h"
 
 struct interrupt_frame
@@ -18,28 +18,28 @@ void _panic(char *message, struct interrupt_frame *frame)
 {
     clear_screen(0x550000);
 
-    put_string("####### ######  ######  ####### ######  \n");
-    put_string("#       #     # #     # #     # #     # \n");
-    put_string("#       #     # #     # #     # #     # \n");
-    put_string("#####   ######  ######  #     # ######  \n");
-    put_string("#       #   #   #   #   #     # #   #   \n");
-    put_string("#       #    #  #    #  #     # #    #  \n");
-    put_string("####### #     # #     # ####### #     # \n");
-    put_string("\n");
-    put_string("LunarOS has been stopped due to a system error.\n");
-    put_string("\n");
+    printk("####### ######  ######  ####### ######  \n");
+    printk("#       #     # #     # #     # #     # \n");
+    printk("#       #     # #     # #     # #     # \n");
+    printk("#####   ######  ######  #     # ######  \n");
+    printk("#       #   #   #   #   #     # #   #   \n");
+    printk("#       #    #  #    #  #     # #    #  \n");
+    printk("####### #     # #     # ####### #     # \n");
+    printk("\n");
+    printk("LunarOS has been stopped due to a system error.\n");
+    printk("\n");
 
     char buffer[64];
-    term.color = 0x00FF00;
-    put_string("Panic: ");
-    put_string(message);
-    put_string(" - Address 0x");
+    set_color(0x00FF00);
+    printk("Panic: ");
+    printk(message);
+    printk(" - Address 0x");
     itoa64(frame->rip, buffer, 16);
-    put_string(buffer);
-    put_string("\n");
+    printk(buffer);
+    printk("\n");
 
-    term.color = 0xFF0000;
-    put_string("System halted.\n");
+    set_color(0xFF0000);
+    printk("System halted.\n");
 
     while (1)
     {

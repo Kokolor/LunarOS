@@ -1,7 +1,7 @@
+#ifndef FONT_H
+#define FONT_H
+
 #include <stdint.h>
-#include <lib/lib.h>
-#include <stdarg.h>
-#include "framebuffer.h"
 
 typedef struct
 {
@@ -10,10 +10,6 @@ typedef struct
     uint8_t height;
 } font_header;
 
-void init_terminal(terminal *term, int cursor_x, int cursor_y, unsigned int color);
-void put_char(char c, int x, int y, terminal *term);
-void put_string(char *string);
-void printk(const char *format, ...);
-void printk_info(const char *message);
-void printk_success(const char *message);
-void printk_error(const char *message);
+extern unsigned char font[];
+
+#endif

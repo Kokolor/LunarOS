@@ -42,6 +42,14 @@ unsigned short inw(unsigned short port)
     return result;
 }
 
+void insw(uint16_t port, void *addr, int cnt)
+{
+    asm volatile("cld; rep insw"
+                 : "=D"(addr), "=c"(cnt)
+                 : "d"(port), "0"(addr), "1"(cnt)
+                 : "memory", "cc");
+}
+
 void io_wait()
 {
     asm volatile("outb %%al, $0x80"
@@ -91,6 +99,21 @@ void *memmove(void *dest, const void *src, size_t n)
     return dest;
 }
 
+int memcmp(const void *s1, const void *s2, size_t n)
+{
+    const unsigned char *p1 = s1, *p2 = s2;
+    while (n--)
+    {
+        if (*p1 != *p2)
+        {
+            return *p1 - *p2;
+        }
+        p1++;
+        p2++;
+    }
+    return 0;
+}
+
 int strcmp(const char *str1, const char *str2)
 {
     while (*str1 && (*str1 == *str2))
@@ -121,26 +144,54 @@ size_t strlen(const char *str)
     return s - str;
 }
 
+char *strncpy(char *destination, const char *source, size_t num)
+{
+    char *ptr = destination;
+    size_t i = 0;
+
+    while (*source && i < num)
+    {
+        *ptr++ = *source++;
+        i++;
+    }
+
+    while (i < num)
+    {
+        *ptr++ = '\0';
+        i++;
+    }
+
+    return destination;
+}
+
+int toupper(int c)
+{
+    if (c >= 'a' && c <= 'z')
+    {
+        return c - ('a' - 'A');
+    }
+    else
+    {
+        return c;
+    }
+}
+
 void itoa(char *buf, unsigned long int n, int base)
 {
-    unsigned long int tmp;
-    int i, j;
-
-    tmp = n;
-    i = 0;
-
+    static char digits[] = "0123456789abcdef";
+    char *p = buf;
     do
     {
-        tmp = n % base;
-        buf[i++] = (tmp < 10) ? (tmp + '0') : (tmp + 'a' - 10);
+        *p++ = digits[n % base];
     } while (n /= base);
-    buf[i--] = 0;
 
-    for (j = 0; j < i; j++, i--)
+    *p = '\0';
+
+    for (char *i = buf, *j = p - 1; i < j; i++, j--)
     {
-        tmp = buf[j];
-        buf[j] = buf[i];
-        buf[i] = tmp;
+        char tmp = *i;
+        *i = *j;
+        *j = tmp;
     }
 }
 
