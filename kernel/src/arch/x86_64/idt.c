@@ -1,6 +1,8 @@
 // #include <framebuffer/font.h>
 #include "idt.h"
 
+int setup_step = 0;
+
 struct interrupt_frame
 {
     uint64_t rip;

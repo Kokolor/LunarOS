@@ -96,6 +96,7 @@ void _start(void)
     }
 
     read_sector(0, bs);
+    check_disk();
 
     printk("Bytes per sector: %d\n", bs->bytes_per_sector);
     printk("Sectors per cluster: %d\n", bs->sectors_per_cluster);
@@ -108,9 +109,8 @@ void _start(void)
     printk("Sectors per track: %d\n", bs->sectors_per_track);
     printk("Head side count: %d\n", bs->head_side_count);
     printk("Hidden sector count: %d\n", bs->hidden_sector_count);
-    printk("Total sectors (long): %d\n", bs->total_sectors_long);
+    printk("Total sectors (long): %d\n\n", bs->total_sectors_long);
 
-    printk("\n"),
     set_color(0xffffff);
 
     read_dir(bs->root_cluster);

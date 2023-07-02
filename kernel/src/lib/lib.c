@@ -33,6 +33,13 @@ void outw(unsigned short port, unsigned short value)
                  : "a"(value), "Nd"(port));
 }
 
+void outsw(uint16_t port, const void *addr, uint32_t count)
+{
+    asm volatile("cld; rep outsw"
+                 : "+S"(addr), "+c"(count)
+                 : "d"(port));
+}
+
 unsigned short inw(unsigned short port)
 {
     unsigned short result;
@@ -164,11 +171,39 @@ char *strncpy(char *destination, const char *source, size_t num)
     return destination;
 }
 
+int strncmp(const char *s1, const char *s2, size_t n)
+{
+    for (size_t i = 0; i < n; i++)
+    {
+        if (s1[i] != s2[i])
+        {
+            return (unsigned char)s1[i] - (unsigned char)s2[i];
+        }
+        else if (s1[i] == '\0')
+        {
+            return 0;
+        }
+    }
+    return 0;
+}
+
 int toupper(int c)
 {
     if (c >= 'a' && c <= 'z')
     {
         return c - ('a' - 'A');
+    }
+    else
+    {
+        return c;
+    }
+}
+
+int tolower(int c)
+{
+    if (c >= 'A' && c <= 'Z')
+    {
+        return c + ('a' - 'A');
     }
     else
     {

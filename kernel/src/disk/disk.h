@@ -10,6 +10,7 @@
 #define ATA_REG_DRIVESEL ATA_PRIMARY_IO + 6
 #define ATA_REG_COMMAND ATA_PRIMARY_IO + 7
 #define ATA_CMD_READ_PIO 0x20
+#define ATA_CMD_WRITE_PIO 0x30
 
 struct boot_sector
 {
@@ -63,4 +64,7 @@ struct dir_entry
 extern struct boot_sector *bs;
 
 void read_sector(uint32_t sector, void *buffer);
+void write_sector(uint32_t sector, void *buffer);
 void read_dir(uint32_t first_cluster);
+void write_file(const char *filename, const void *data, uint32_t size);
+int check_disk();

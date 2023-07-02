@@ -6,6 +6,11 @@
 #define TOSTRING(x) STRINGIFY(x)
 #define panic(message, frame) _panic(__FILE__ ":" TOSTRING(__LINE__) ": " message, frame)
 
+extern int setup_step;
+
+#define KEY_1 0x02
+#define KEY_2 0x03
+
 extern struct interrupt_frame;
 
 typedef struct

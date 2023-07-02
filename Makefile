@@ -45,8 +45,6 @@ iso:
 	mkdir -p iso_root
 	cp kernel.elf \
 		limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
-	cp font.psf iso_root/
-	cp background.bmp iso_root/
 	xorriso -as mkisofs -b limine-cd.bin \
 		-no-emul-boot -boot-load-size 4 -boot-info-table \
 		--efi-boot limine-cd-efi.bin \
@@ -63,9 +61,11 @@ clean:
 	rm *.o
 
 fat32_image:
-	dd if=/dev/zero of=fat32.img bs=1M count=64
-	mkfs.fat -F32 fat32.img
-	mcopy -i fat32.img ./hello.txt ::/
+	gcc tools/main.c -o image_creator
+	./image_creator create
+	./image_creator copy data/file.txt
+	./image_creator copy data/font.psf
+	rm image_creator
 
 run: fat32_image
 	make iso
